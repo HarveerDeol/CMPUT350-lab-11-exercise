@@ -65,7 +65,7 @@ private:
 // NOTE: a production implementation might also support other edge wrapping behaviors, like cycling
 // around to the other side of the texture. See https://learnopengl.com/Getting-started/Textures
 // Our implementation corresponds to GL_CLAMP_TO_EDGE
-inline sf::Image padImage(const sf::Image& img, uint pixels) {
+inline sf::Image padImage(const sf::Image& img, unsigned pixels) {
     sf::Image ret(img.getSize() + sf::Vector2u{2 * pixels, 2 * pixels});
     if (!ret.copy(img, {pixels, pixels})) {
         throw std::runtime_error("Failed to copy original image");
@@ -94,8 +94,8 @@ inline sf::Image padImage(const sf::Image& img, uint pixels) {
                 samplePos.y = std::clamp(samplePos.y, 0, static_cast<int>(img.getSize().y) - 1);
                 ret.setPixel(
                     sf::Vector2u(offset) +
-                        sf::Vector2u{static_cast<uint>(dx), static_cast<uint>(dy)},
-                    img.getPixel({static_cast<uint>(samplePos.x), static_cast<uint>(samplePos.y)}));
+                        sf::Vector2u{static_cast<unsigned>(dx), static_cast<unsigned>(dy)},
+                    img.getPixel({static_cast<unsigned>(samplePos.x), static_cast<unsigned>(samplePos.y)}));
             }
         }
     }
@@ -106,7 +106,7 @@ using TextureID = size_t;
 
 class TextureAtlas {
 public:
-    TextureAtlas(sf::Vector2u binSize, uint padding)
+    TextureAtlas(sf::Vector2u binSize, unsigned padding)
         : mTexture(binSize), mPacker(sf::Vector2f(mTexture.getSize())), mPadding{padding} {}
 
     TextureID registerTexture(const std::string& filepath) {
@@ -148,7 +148,7 @@ public:
 private:
     sf::Texture mTexture;
     RectPacker mPacker;
-    uint mPadding;
+    unsigned mPadding;
 };
 
 #endif  // TEXTURE_ATLAS_H

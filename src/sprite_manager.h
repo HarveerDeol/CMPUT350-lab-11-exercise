@@ -21,7 +21,7 @@ using SpriteID = size_t;
 
 class SpriteManager {
 public:
-    SpriteManager(const sf::Vector2u& atlasSize, uint padding)
+    SpriteManager(const sf::Vector2u& atlasSize, unsigned padding)
         : mVertices(sf::PrimitiveType::Triangles),
           mNumSprites{0},
           mAtlas(atlasSize, padding),
