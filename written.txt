@@ -1,2 +1,17 @@
-2a.
-2b.
+2a. with batching, the program converged to about 66~ FPS, while the unbatched
+sf::Sprite version converged to about 57~ FPS, a speedup of roughly 16%. Batching
+replaces about 10,000 separate window.draw calls, each with CPU side state setup
+and driver overhead, with a single draw call over one contiguous buffer. The gain
+was modest, likely because the per frame CPU work that regenerates and updates
+10,000 particle positions is the same in both programs and takes up much of the
+frame time
+
+2b. One approach is to give each sprite a depth value and write it to the z
+component of gl_Position in the vertex shader, like derived from a per sprite
+layer, then call glEnable and clear GL_DEPTH_BUFFER_BIT each frame. The rasterizer's
+depth buffer then resolves occlusion per fragment, so sprites no longer need to be 
+sorted or drawn back to front. One caveat is that fully transparent texels still write 
+depth, so low alpha fragments should be discarded in the fragment shader 
+or blended sprites sorted.
+
+ 
